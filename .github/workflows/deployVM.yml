@@ -13,13 +13,22 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    # Deploy ARM template
+    - name: Run ARM deploy - keyvault
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ secrets.AZURE_RG }}
+        template: ./keyvault.json
+      #  parameters: ./parameters.json
+
       # Deploy ARM template
     - name: Run ARM deploy
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
-        template: ./template.json
+        template: ./vms.json
         parameters: ./parameters.json
 
       # output containerName variable from template
