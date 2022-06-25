@@ -12,7 +12,7 @@
             "value": "myadmin"
         },
         "hellobluems1-vmAdminPassword": {
-            "value": null
+            "value": "replacewithkv"
         },
         "hellobluems1-vmUbuntuOSVersion": {
             "value": "14.04.2-LTS"
