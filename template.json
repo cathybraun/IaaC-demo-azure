@@ -1,0 +1,170 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ms1storageType": {
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_ZRS",
+                "Standard_GRS",
+                "Standard_RAGRS",
+                "Premium_LRS"
+            ],
+            "type": "String"
+        },
+        "hellobluems1-vmName": {
+            "minLength": 1,
+            "type": "String"
+        },
+        "hellobluems1-vmAdminUserName": {
+            "minLength": 1,
+            "type": "String"
+        },
+        "hellobluems1-vmAdminPassword": {
+            "type": "SecureString"
+        },
+        "hellobluems1-vmUbuntuOSVersion": {
+            "defaultValue": "14.04.2-LTS",
+            "allowedValues": [
+                "12.04.5-LTS",
+                "14.04.2-LTS",
+                "15.04"
+            ],
+            "type": "String"
+        }
+    },
+    "variables": {
+        "hellobluenetworkPrefix": "10.0.0.0/16",
+        "hellobluenetworkSubnet1Name": "Subnet-1",
+        "hellobluenetworkSubnet1Prefix": "10.0.0.0/24",
+        "hellobluenetworkSubnet2Name": "Subnet-2",
+        "hellobluenetworkSubnet2Prefix": "10.0.1.0/24",
+        "ms1storageName": "[concat('ms1storage', uniqueString(resourceGroup().id))]",
+        "hellobluems1-vmImagePublisher": "Canonical",
+        "hellobluems1-vmImageOffer": "UbuntuServer",
+        "hellobluems1-vmOSDiskName": "hellobluems1-vmOSDisk",
+        "hellobluems1-vmVmSize": "Standard_B1s",
+        "hellobluems1-vmVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'hellobluenetwork')]",
+        "hellobluems1-vmSubnetRef": "[concat(variables('hellobluems1-vmVnetID'), '/subnets/', variables('hellobluenetworkSubnet1Name'))]",
+        "hellobluems1-vmStorageAccountContainerName": "vhds",
+        "hellobluems1-vmNicName": "[concat(parameters('hellobluems1-vmName'), 'NetworkInterface')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2015-06-15",
+            "name": "hellobluenetwork",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [],
+            "tags": {
+                "displayName": "hellobluenetwork"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('hellobluenetworkPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('hellobluenetworkSubnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('hellobluenetworkSubnet1Prefix')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('hellobluenetworkSubnet2Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('hellobluenetworkSubnet2Prefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2015-06-15",
+            "name": "[variables('ms1storageName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [],
+            "tags": {
+                "displayName": "ms1storage"
+            },
+            "properties": {
+                "accountType": "[parameters('ms1storageType')]"
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2015-06-15",
+            "name": "[variables('hellobluems1-vmNicName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', 'hellobluenetwork')]"
+            ],
+            "tags": {
+                "displayName": "hellobluems1-vmNic"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('hellobluems1-vmSubnetRef')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2015-06-15",
+            "name": "[parameters('hellobluems1-vmName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', variables('ms1storageName'))]",
+                "[concat('Microsoft.Network/networkInterfaces/', variables('hellobluems1-vmNicName'))]"
+            ],
+            "tags": {
+                "displayName": "hellobluems1-vm"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('hellobluems1-vmVmSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('hellobluems1-vmName')]",
+                    "adminUsername": "[parameters('hellobluems1-vmAdminUsername')]",
+                    "adminPassword": "[parameters('hellobluems1-vmAdminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('hellobluems1-vmImagePublisher')]",
+                        "offer": "[variables('hellobluems1-vmImageOffer')]",
+                        "sku": "[parameters('hellobluems1-vmUbuntuOSVersion')]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "hellobluems1-vmOSDisk",
+                        "vhd": {
+                            "uri": "[concat('http://', variables('ms1storageName'), '.blob.core.windows.net/', variables('hellobluems1-vmStorageAccountContainerName'), '/', variables('hellobluems1-vmOSDiskName'), '.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('hellobluems1-vmNicName'))]"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

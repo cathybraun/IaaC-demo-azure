@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ms1storageType": {
+            "value": "Standard_LRS"
+        },
+        "hellobluems1-vmName": {
+            "value": "ms1"
+        },
+        "hellobluems1-vmAdminUserName": {
+            "value": "myadmin"
+        },
+        "hellobluems1-vmAdminPassword": {
+            "value": null
+        },
+        "hellobluems1-vmUbuntuOSVersion": {
+            "value": "14.04.2-LTS"
+        }
+    }
+}
