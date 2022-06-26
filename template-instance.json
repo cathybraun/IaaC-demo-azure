@@ -131,6 +131,8 @@
             "apiVersion": "2019-03-01",
             "location": "[resourceGroup().location]",
             "properties": {
+                "platformFaultDomainCount": 1,
+                "platformUpdateDomainCount": 1
             },
             "sku": {
                 "name": "Aligned"
