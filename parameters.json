@@ -17,7 +17,7 @@
         "hellobluems1-vmAdminPassword": {
             "reference":{
                 "keyVault": {
-                    "id": "/subscriptions/e82f8e60-963c-4ebf-880d-4a6f2647e05e/resourceGroups/kv-helloblue"
+                    "id": "/subscriptions/e82f8e60-963c-4ebf-880d-4a6f2647e05e/resourceGroups/helloblue/providers/Microsoft.KeyVault/vaults/kv-helloblue"
                 },
                 "secretName": "password-vm"
             }
