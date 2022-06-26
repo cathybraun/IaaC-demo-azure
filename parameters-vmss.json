@@ -11,6 +11,9 @@
         "vmssName": {
             "value": "helloblue-ms1-vmss"
         },
+        "vnetName":{
+            "value": "helloblue-vnet"
+        },
         "instanceCount": {
             "value": 1
         },
