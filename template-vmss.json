@@ -4,7 +4,7 @@
     "parameters": {
         "vmSku": {
             "defaultValue": "Standard_A1",
-            "type": "String",
+            "type": "string",
             "metadata": {
                 "description": "Size of VMs in the VM Scale Set."
             }
@@ -15,14 +15,14 @@
                 "14.04.4-LTS",
                 "16.04-LTS"
             ],
-            "type": "String",
+            "type": "string",
             "metadata": {
                 "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version. Allowed values are: 15.10, 14.04.4-LTS."
             }
         },
         "vmssName": {
             "maxLength": 61,
-            "type": "String",
+            "type": "string",
             "metadata": {
                 "description": "String used as a base for naming resources. Must be 3-61 characters in length and globally unique across Azure. A hash is prepended to this string for some resources, and resource-specific information is appended."
             }
@@ -30,20 +30,20 @@
         "instanceCount": {
             "minValue": 1,
             "maxValue": 100,
-            "type": "Int",
+            "type": "int",
             "metadata": {
                 "description": "Number of VM instances (100 or less)."
             }
         },
         "adminUsername": {
-            "type": "String",
+            "type": "string",
             "metadata": {
                 "description": "Admin username on all VMs."
             }
         },
         "location": {
             "defaultValue": "[resourceGroup().location]",
-            "type": "String",
+            "type": "string",
             "metadata": {
                 "description": "Default location"
             }
@@ -54,20 +54,20 @@
                 "sshPublicKey",
                 "password"
             ],
-            "type": "String",
+            "type": "string",
             "metadata": {
                 "description": "Type of authentication to use on the Virtual Machine. SSH key is recommended."
             }
         },
         "adminPasswordOrKey": {
-            "type": "SecureString",
+            "type": "securestring",
             "metadata": {
                 "description": "SSH Key or password for the Virtual Machine. SSH key is recommended."
             }
         }
     },
     "variables": {
-        "namingInfix": "[toLower(concat(parameters('vmssName'), uniqueString(resourceGroup().id)))]",
+        "namingInfix": "[toLower(substring(concat(parameters('vmssName'), uniqueString(resourceGroup().id)), 0, 9))]",
         "longNamingInfix": "[toLower(parameters('vmssName'))]",
         "addressPrefix": "10.0.0.0/16",
         "subnetPrefix": "10.0.0.0/24",
@@ -126,7 +126,7 @@
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2017-04-01",
+            "apiVersion": "2017-06-01",
             "name": "[variables('publicIPAddressName')]",
             "location": "[parameters('location')]",
             "properties": {
@@ -138,7 +138,7 @@
         },
         {
             "type": "Microsoft.Network/loadBalancers",
-            "apiVersion": "2017-04-01",
+            "apiVersion": "2017-06-01",
             "name": "[variables('loadBalancerName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
@@ -179,7 +179,7 @@
         {
             "type": "Microsoft.Compute/virtualMachineScaleSets",
             "apiVersion": "2017-03-30",
-            "name": "[variables('namingInfix')]",
+            "name": "[parameters('vmssName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/loadBalancers/', variables('loadBalancerName'))]",
@@ -191,7 +191,7 @@
                 "capacity": "[parameters('instanceCount')]"
             },
             "properties": {
-                "overprovision": "false",
+                "overprovision": false,
                 "upgradePolicy": {
                     "mode": "Manual"
                 },
