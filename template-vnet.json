@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "resources": [
+        {
+            "name": "helloblue-vnet",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [],
+            "tags": {
+                "displayName": "helloblue-vnet"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('helloblue-vnetPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('helloblue-vnetSubnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('helloblue-vnetSubnet1Prefix')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('helloblue-vnetSubnet2Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('helloblue-vnetSubnet2Prefix')]"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "variables": {
+        "helloblue-vnetPrefix": "10.0.0.0/16",
+        "helloblue-vnetSubnet1Name": "Subnet-1",
+        "helloblue-vnetSubnet1Prefix": "10.0.0.0/24",
+        "helloblue-vnetSubnet2Name": "Subnet-2",
+        "helloblue-vnetSubnet2Prefix": "10.0.1.0/24"
+    }
+}
