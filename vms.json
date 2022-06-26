@@ -2,6 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "keyVaultName": {
+            "type": "String",
+            "metadata": {
+                "description": "Specifies the name of the key vault."
+            }
+        },
         "ms1storageType": {
             "defaultValue": "Standard_LRS",
             "allowedValues": [
