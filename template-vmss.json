@@ -73,11 +73,10 @@
         }
     },
     "variables": {
-        "namingInfix": "[toLower(substring(concat(parameters('vmssName'), uniqueString(resourceGroup().id)), 0, 9))]",
         "longNamingInfix": "[toLower(parameters('vmssName'))]",
         "addressPrefix": "10.0.0.0/16",
         "subnetPrefix": "10.0.0.0/24",
-        "virtualNetworkName": "[parameters('vnetName')]",
+        "virtualNetworkName": "[variables('longNamingInfix')]",
         "publicIPAddressName": "[concat(variables('virtualNetworkName'), 'pip')]",
         "subnetName": "[concat(variables('virtualNetworkName'), 'subnet')]",
         "loadBalancerName": "[concat(variables('virtualNetworkName'), 'lb')]",
@@ -249,7 +248,7 @@
             }
         },
         {
-            "type": "Microsoft.Insights/autoscaleSettings",
+            "type": "Microsoft.Insights/autoscalesettings",
             "apiVersion": "2015-04-01",
             "name": "autoscalewad",
             "location": "[parameters('location')]",
