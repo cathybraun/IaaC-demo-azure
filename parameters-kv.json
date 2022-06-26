@@ -1,0 +1,41 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "keyVaultName": {
+            "value": "kv-helloblue"
+        },
+        "location": {
+            "value": "westus"
+        },
+        "enabledForDeployment": {
+            "value": true
+        },
+        "enabledForDiskEncryption": {
+            "value": false
+        },
+        "enabledForTemplateDeployment": {
+            "value": true
+        },
+        "tenantId": {
+            "value": "742c3216-01d8-4a09-a3b1-f11b38561189"
+        },
+        "objectId": {
+            "value": "163b9c49-217d-4902-b9b5-cf8ebd869c53"
+        },
+        "keysPermissions": {
+            "value": [
+                "list,get"
+            ]
+        },
+        "secretsPermissions": {
+            "value": [
+                "list,get"
+            ]
+        },
+        "skuName": {
+            "value": "standard"
+        },
+        "secretsObject": {}
+    }
+}

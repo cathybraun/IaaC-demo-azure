@@ -2,6 +2,9 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "keyVaultName": {
+            "value": "kv-helloblue"
+        },
         "ms1storageType": {
             "value": "Standard_LRS"
         },
@@ -12,7 +15,7 @@
             "value": "myadmin"
         },
         "hellobluems1-vmAdminPassword": {
-            "value": "replacewithKV!"
+            "value": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
         },
         "hellobluems1-vmUbuntuOSVersion": {
             "value": "14.04.2-LTS"
