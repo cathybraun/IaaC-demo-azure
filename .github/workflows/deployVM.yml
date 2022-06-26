@@ -21,23 +21,23 @@ jobs:
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: ./template-vnet.json
     
-      # Deploy ARM template - availability sets
-    - name: Run ARM deploy - availability sets
+      # Deploy ARM template - vm scalesets
+    - name: Run ARM deploy - vm scaleset
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
-        template: ./template-availability.json
-        parameters: ./parameters-availability.json
+        template: ./template-vmss.json
+        parameters: ./parameters-vmss.json
 
-      # Deploy ARM template - deploy instances
-    - name: Run ARM deploy - deploy instances
-      uses: azure/arm-deploy@v1
-      with:
-        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ secrets.AZURE_RG }}
-        template: ./template-instance.json
-        parameters: ./parameters-instance.json
+    # Deploy ARM template - deploy instances
+    #- name: Run ARM deploy - deploy instances
+    #  uses: azure/arm-deploy@v1
+    #  with:
+    #    subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+    #    resourceGroupName: ${{ secrets.AZURE_RG }}
+    #    template: ./template-instance.json
+    #    parameters: ./parameters-instance.json
 
       # output containerName variable from template
     - run: echo ${{ steps.deploy.outputs.containerName }}
