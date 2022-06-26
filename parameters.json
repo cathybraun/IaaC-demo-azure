@@ -15,7 +15,12 @@
             "value": "myadmin"
         },
         "hellobluems1-vmAdminPassword": {
-            "value": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+            "reference":{
+                "keyVault": {
+                    "id": "/subscriptions/e82f8e60-963c-4ebf-880d-4a6f2647e05e/resourceGroups/kv-helloblue"
+                },
+                "secretName": "password-vm"
+            }
         },
         "hellobluems1-vmUbuntuOSVersion": {
             "value": "14.04.2-LTS"
