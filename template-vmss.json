@@ -76,7 +76,7 @@
         "longNamingInfix": "[toLower(parameters('vmssName'))]",
         "addressPrefix": "10.0.0.0/16",
         "subnetPrefix": "10.0.0.0/24",
-        "virtualNetworkName": "[variables('longNamingInfix')]",
+        "virtualNetworkName": "[parameters('vnetName')]",
         "publicIPAddressName": "[concat(variables('virtualNetworkName'), 'pip')]",
         "subnetName": "[concat(variables('virtualNetworkName'), 'subnet')]",
         "loadBalancerName": "[concat(variables('virtualNetworkName'), 'lb')]",
