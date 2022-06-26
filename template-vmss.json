@@ -179,7 +179,7 @@
         {
             "type": "Microsoft.Compute/virtualMachineScaleSets",
             "apiVersion": "2017-03-30",
-            "name": "[variables('namingInfix')]",
+            "name": "[variables('longNamingInfix')]",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/loadBalancers/', variables('loadBalancerName'))]",
