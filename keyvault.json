@@ -4,7 +4,7 @@
     "parameters": {
         "vaultName": {
             "type": "string",
-            "defaultValue": "[concat('keyvault-', uniqueString(resourceGroup().id))]",
+            "defaultValue": "kv-helloblue",
             "metadata": {
                 "description": "Specifies the name of the KeyVault, this value must be globally unique."
             }
