@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmSku": {
+            "value": "Standard_B1s"
+        },
+        "ubuntuOSVersion": {
+            "value": "16.04-LTS"
+        },
+        "vmssName": {
+            "value": "helloblue-ms1-vmss"
+        },
+        "vnetName":{
+            "value": "helloblue-vnet"
+        },
+        "subnetName":{
+            "value": "Subnet-1"
+        },
+        "instanceCount": {
+            "value": 1
+        },
+        "adminUsername": {
+            "value": "hbadmin"
+        },
+        "location": {
+            "value": "westus"
+        },
+        "authenticationType": {
+            "value": "password"
+        },
+        "adminPasswordOrKey": {
+            "reference":{
+                "keyVault": {
+                    "id": "/subscriptions/e82f8e60-963c-4ebf-880d-4a6f2647e05e/resourceGroups/helloblue/providers/Microsoft.KeyVault/vaults/kv-helloblue"
+                },
+                "secretName": "password-vm"
+            }
+        },
+        "autoscaleName":{
+            "value": "autoscale-vmss-ms1-"
+        },
+        "autoscaleMin":{
+            "value": 1
+        },
+        "autoscaleMax":{
+            "value": 3
+        },
+        "autoscaleDefault":{
+            "value": 1
+        }
+    }
+}

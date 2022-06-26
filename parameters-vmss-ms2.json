@@ -9,13 +9,16 @@
             "value": "16.04-LTS"
         },
         "vmssName": {
-            "value": "helloblue-ms1-vmss"
+            "value": "helloblue-ms2-vmss"
         },
         "vnetName":{
             "value": "helloblue-vnet"
         },
+        "subnetName":{
+            "value": "Subnet-2"
+        },
         "instanceCount": {
-            "value": 1
+            "value": 2
         },
         "adminUsername": {
             "value": "hbadmin"
@@ -33,6 +36,18 @@
                 },
                 "secretName": "password-vm"
             }
+        },
+        "autoscaleName":{
+            "value": "autoscale-vmss-ms2-"
+        },
+        "autoscaleMin":{
+            "value": 2
+        },
+        "autoscaleMax":{
+            "value": 5
+        },
+        "autoscaleDefault":{
+            "value": 2
         }
     }
 }
