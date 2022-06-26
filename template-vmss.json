@@ -67,7 +67,7 @@
         }
     },
     "variables": {
-        "namingInfix": "[toLower(substring(concat(parameters('vmssName'), uniqueString(resourceGroup().id)), 0, 9))]",
+        "namingInfix": "[toLower(substring(parameters('vmssName')), 0, 9))]",
         "longNamingInfix": "[toLower(parameters('vmssName'))]",
         "addressPrefix": "10.0.0.0/16",
         "subnetPrefix": "10.0.0.0/24",
@@ -179,7 +179,7 @@
         {
             "type": "Microsoft.Compute/virtualMachineScaleSets",
             "apiVersion": "2017-03-30",
-            "name": "[variables('longNamingInfix')]",
+            "name": "[variables('namingInfix')]",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/loadBalancers/', variables('loadBalancerName'))]",
