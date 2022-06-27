@@ -1,5 +1,5 @@
 on: [push]
-name: Azure ARM VNet
+name: Azure-ARM-VNet
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -18,6 +18,7 @@ jobs:
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
+        deploymentName: ${{ github.workflow }}-${{ github.run_id }}
         template: ./template-vnet.json
 
       # output containerName variable from template
