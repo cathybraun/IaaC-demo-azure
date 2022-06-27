@@ -30,8 +30,8 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ env.ResourceGroupName }}
         deploymentName: ${{ github.workflow }}-${{ github.run_id}}
-        template: ./template-vmss.json
-        parameters: ./parameters-vmss-ms1.json
+        template: ./vmss/template-vmss.json
+        parameters: ./vmss/parameters-vmss-ms1.json
 
       # output containerName variable from template
     - run: echo ${{ steps.deploy.outputs.containerName }}
