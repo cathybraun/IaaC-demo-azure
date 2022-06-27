@@ -1,5 +1,5 @@
 on: [push]
-name: Azure-ARM-MS1
+name: Azure-ARM-MS2
 jobs:
   vmss-ms1-build-and-deploy:
     runs-on: ubuntu-latest
