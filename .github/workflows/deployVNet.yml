@@ -17,7 +17,7 @@ jobs:
       ResourceGroupName: ${{ secrets.AZURE_RG }}
       ResourceGroupLocation: "westus"
       ENVIRONMENT: ${{ inputs.environment }}
-      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS_${{ inputs.environment }} }}
+      AZURE_CREDENTIALS: secrets.AZURE_CREDENTIALS_${{ inputs.environment }}
     steps:
       # Checkout code
     - uses: actions/checkout@main
@@ -25,7 +25,7 @@ jobs:
       # Log into Azure
     - uses: azure/login@v1
       with:
-        creds: ${{ env.AZURE_CREDENTIALS }}
+        creds: ${{ ${{ env.AZURE_CREDENTIALS }} }}
 
       # Create resource group if it doesn't exist
     - uses: Azure/CLI@v1
