@@ -6,7 +6,7 @@ jobs:
     env:
       ResourceGroupName: ${{ secrets.AZURE_RG }}
       ResourceGroupLocation: "westus"
-      DeploymentName: ${GITHUB_WORKFLOW}-${GITHUB_SHA::6}
+      DeploymentName: '${GITHUB_WORKFLOW}-${GITHUB_SHA::6}'
     steps:
       # Checkout code
     - uses: actions/checkout@main
