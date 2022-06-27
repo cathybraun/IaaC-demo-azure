@@ -24,27 +24,14 @@ jobs:
           echo "Azure resource group created"
     
       # Deploy ARM template - vm scalesets
-    ms1:
-      steps:
-        name: Run ARM deploy - vm scaleset
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ env.ResourceGroupName }}
-          deploymentName: ${{ github.job }}
-          template: ./template-vmss.json
-          parameters: ./parameters-vmss-ms1.json
-    ms2:
-      steps:
-        # Deploy ARM template - vm scalesets
-        name: Run ARM deploy - vm scaleset
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ env.ResourceGroupName }}
-          deploymentName: ${{ github.job }}
-          template: ./template-vmss.json
-          parameters: ./parameters-vmss-ms2.json
+    - name: Run ARM deploy - vm scaleset
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ env.ResourceGroupName }}
+        deploymentName: ${{ github.job }}
+        template: ./template-vmss.json
+        parameters: ./parameters-vmss-ms1.json
 
       # output containerName variable from template
     - run: echo ${{ steps.deploy.outputs.containerName }}
