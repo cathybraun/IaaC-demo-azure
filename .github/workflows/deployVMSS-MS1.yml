@@ -24,7 +24,7 @@ jobs:
       # Log into Azure
     - uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}_${{ env.ENVIRONMENT }}
 
       # Create resource group if it doesn't exist
     - uses: Azure/CLI@v1
@@ -38,7 +38,7 @@ jobs:
     - name: Run ARM deploy - vm scaleset
       uses: azure/arm-deploy@v1
       with:
-        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}_${{ env.ENVIRONMENT }}
         resourceGroupName: ${{ env.ResourceGroupName }}
         deploymentName: ${{ github.workflow }}-${{ github.run_id}}
         template: ./vmss/template-vmss.json

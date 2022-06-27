@@ -6,14 +6,16 @@ on:
       environment:
         type: choice
         options:
-        - dev
-        - prod
+        - DEV
+        - PROD
         required: true
 name: Azure-ARM-VNet
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
+      ResourceGroupName: ${{ secrets.AZURE_RG }}
+      ResourceGroupLocation: "westus"
       ENVIRONMENT: ${{ inputs.environment }}
     steps:
       # Checkout code
@@ -22,13 +24,21 @@ jobs:
       # Log into Azure
     - uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}_${{ env.ENVIRONMENT}}
+
+      # Create resource group if it doesn't exist
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash
+          az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
+          echo "Azure resource group created"
 
       # Deploy ARM template -vnet
     - name: Run ARM deploy - vnet
       uses: azure/arm-deploy@v1
       with:
-        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}_${{ env.ENVIRONMENT }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         deploymentName: ${{ github.workflow }}-${{ github.run_id }}
         template: ./vnet/template-vnet.json
