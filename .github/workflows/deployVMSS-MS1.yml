@@ -1,7 +1,7 @@
 on: [push]
 name: Azure-ARM-MS1
 jobs:
-  vmss-ms1-build-and-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     env:
       ResourceGroupName: ${{ secrets.AZURE_RG }}
