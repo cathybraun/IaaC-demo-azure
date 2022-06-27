@@ -25,7 +25,8 @@ jobs:
     
     jobs:
       # Deploy ARM template - vm scalesets
-    - name: Run ARM deploy - vm scaleset
+    ms1:
+      name: Run ARM deploy - vm scaleset
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
@@ -33,9 +34,9 @@ jobs:
         deploymentName: ${{ github.job }}
         template: ./template-vmss.json
         parameters: ./parameters-vmss-ms1.json
-
+    ms2:
       # Deploy ARM template - vm scalesets
-    - name: Run ARM deploy - vm scaleset
+      name: Run ARM deploy - vm scaleset
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
