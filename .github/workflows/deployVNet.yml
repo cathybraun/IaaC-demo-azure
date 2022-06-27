@@ -25,7 +25,7 @@ jobs:
       # Log into Azure
     - uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ env.AZURE_CREDENTIALS }}
 
       # Create resource group if it doesn't exist
     - uses: Azure/CLI@v1
