@@ -17,7 +17,7 @@ jobs:
       ResourceGroupName: ${{ secrets.AZURE_RG }}
       ResourceGroupLocation: "westus"
       ENVIRONMENT: ${{ inputs.environment }}
-      AZURE_CREDENTIALS: secrets.AZURE_CREDENTIALS_${{ env.ENVIRONMENT }}
+      AZURE_CREDENTIALS: secrets.AZURE_CREDENTIALS_${{ inputs.environment }}
     steps:
       # Checkout code
     - uses: actions/checkout@main
