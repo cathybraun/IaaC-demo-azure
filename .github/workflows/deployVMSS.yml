@@ -37,7 +37,7 @@ jobs:
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ env.ResourceGroupName }}
-        deploymentName: "MS1 vmss"
+        deploymentName: "MS1vmss"
         template: ./template-vmss.json
         parameters: ./parameters-vmss-ms1.json
 
