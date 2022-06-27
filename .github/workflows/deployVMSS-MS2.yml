@@ -1,4 +1,14 @@
-on: [push]
+on:
+  pull_request:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        options:
+        - dev
+        - prod
+        required: true
 name: Azure-ARM-MS2
 jobs:
   build-and-deploy:
@@ -6,6 +16,7 @@ jobs:
     env:
       ResourceGroupName: ${{ secrets.AZURE_RG }}
       ResourceGroupLocation: "westus"
+      ENVIRONMENT: ${{ inputs.environment }}
     steps:
       # Checkout code
     - uses: actions/checkout@main

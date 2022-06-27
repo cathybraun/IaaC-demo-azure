@@ -1,8 +1,20 @@
-on: [push]
+on:
+  pull_request:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        options:
+        - dev
+        - prod
+        required: true
 name: Azure-ARM-VNet
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: ${{ inputs.environment }}
     steps:
       # Checkout code
     - uses: actions/checkout@main
