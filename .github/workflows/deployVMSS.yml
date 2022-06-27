@@ -1,10 +1,12 @@
 on: [push]
-name: Azure ARM
+name: Azure ARM Microservice 1
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      ResourceGroupName: ${{ secrets.AZURE_RG }}
+      ResourceGroupLocation: "westus"
     steps:
-
       # Checkout code
     - uses: actions/checkout@main
 
@@ -12,6 +14,14 @@ jobs:
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Create resource group if it doesn't exist
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash
+          az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
+          echo "Azure resource group created"
 
       # Deploy ARM template -vnet
     - name: Run ARM deploy - vnet
@@ -26,7 +36,8 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ secrets.AZURE_RG }}
+        resourceGroupName: ${{ env.ResourceGroupName }}
+        deploymentName: "MS1 vmss"
         template: ./template-vmss.json
         parameters: ./parameters-vmss-ms1.json
 
