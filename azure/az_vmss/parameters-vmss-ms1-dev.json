@@ -18,7 +18,7 @@
             "value": "subnet1-dev"
         },
         "instanceCount": {
-            "value": 2
+            "value": 1
         },
         "adminUsername": {
             "value": "hbadmin"
@@ -41,13 +41,13 @@
             "value": "autoscale-vmss-ms1-dev"
         },
         "autoscaleMin":{
-            "value": 2
+            "value": 1
         },
         "autoscaleMax":{
             "value": 3
         },
         "autoscaleDefault":{
-            "value": 2
+            "value": 1
         }
     }
 }
