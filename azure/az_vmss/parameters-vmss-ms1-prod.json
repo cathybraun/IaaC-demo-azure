@@ -41,13 +41,13 @@
             "value": "autoscale-vmss-ms1-prod"
         },
         "autoscaleMin":{
-            "value": 3
+            "value": 1
         },
         "autoscaleMax":{
-            "value": 5
+            "value": 3
         },
         "autoscaleDefault":{
-            "value": 3
+            "value": 1
         }
     }
 }
