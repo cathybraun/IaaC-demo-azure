@@ -1,0 +1,62 @@
+on:
+  pull_request:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        description: 'Deploy environment'
+        required: true
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+
+name: deployKV
+jobs:
+  setup:
+    outputs:
+      env: ${{ steps.set_env.outputs.env }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: Set environment
+        id: set_env
+        run: |
+          if [[ "${{ github.event.inputs.environment }}" == "" ]]; then
+            echo "::set-output name=env::dev"
+          else
+            echo "::set-output name=env::${{ github.event.inputs.environment }}"            
+          fi
+  deployKV:
+    needs: setup
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.setup.outputs.env }}
+    env:
+      ResourceGroupName: ${{ secrets.AZURE_RG }}
+      ResourceGroupLocation: "westus"
+    steps:
+      # Checkout code
+    - uses: actions/checkout@main
+
+      # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Deploy ARM template -vnet
+    - name: Run ARM deploy - keyvault
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ secrets.AZURE_RG }}
+        deploymentName: ${{ github.job }}-${{ github.event.inputs.environment }}-${{ github.run_id }}
+        template: ./azure/az_keyvault/keyvault.json
+        parameters: ./azure/az_keyvault/parameters-kv-${{ github.event.inputs.environment }}.json
+
+      # output containerName variable from template
+    - run: echo ${{ steps.deploy.outputs.containerName }}

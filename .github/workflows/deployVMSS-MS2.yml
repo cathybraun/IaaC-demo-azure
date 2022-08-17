@@ -1,0 +1,70 @@
+on:
+  pull_request:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        description: 'Deploy environment'
+        required: true
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+
+name: deployVMSS-MS2
+jobs:
+  setup:
+    outputs:
+      env: ${{ steps.set_env.outputs.env }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: Set environment
+        id: set_env
+        run: |
+          if [[ "${{ github.event.inputs.environment }}" == "" ]]; then
+            echo "::set-output name=env::dev"
+          else
+            echo "::set-output name=env::${{ github.event.inputs.environment }}"            
+          fi
+  deployVMSS-MS2:
+    needs: setup
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.setup.outputs.env }}
+    env:
+      ResourceGroupName: ${{ secrets.AZURE_RG }}
+      ResourceGroupLocation: "westus"
+    steps:
+      # Checkout code
+    - uses: actions/checkout@main
+
+      # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Create resource group if it doesn't exist
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash
+          az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
+          echo "Azure resource group created"
+    
+      # Deploy ARM template - vm scalesets
+    - name: Run ARM deploy - vm scaleset
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ env.ResourceGroupName }}
+        deploymentName: ${{ github.job }}-${{ github.event.inputs.environment }}-${{ github.run_id}}
+        template: ./azure/az_vmss/template-vmss.json
+        parameters: ./azure/az_vmss/parameters-vmss-ms2-${{ github.event.inputs.environment }}.json
+
+      # output containerName variable from template
+    - run: echo ${{ steps.deploy.outputs.containerName }}

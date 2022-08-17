@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName":{
+            "value": "iaac-demo-vnet-prod" 
+        },
+        "vnetcidrBlock":{
+            "value": "10.100.0.0/16"
+        },
+        "vnetSubnet1":{
+            "value": "subnet1-prod" 
+        },
+        "vnetSubnet1cidr":{
+            "value": "10.100.0.0/24"
+        },
+        "vnetSubnet2":{
+            "value": "subnet2-prod"
+        },
+        "vnetSubnet2cidr":{
+            "value": "10.100.1.0/24"
+        }
+    }
+}

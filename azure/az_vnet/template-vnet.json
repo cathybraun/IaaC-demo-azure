@@ -1,0 +1,82 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName":{
+            "type": "string",
+            "metadata": {
+                "description": "Name of the vnet"
+            }
+        },
+        "vnetcidrBlock":{
+            "type": "string",
+            "metadata": {
+                "description": "Range of the cidr block"
+            }
+        },
+        "vnetSubnet1":{
+            "type": "string",
+            "metadata": {
+                "description": "Name of the subnet1"
+            }
+        },
+        "vnetSubnet1cidr":{
+            "type": "string",
+            "metadata": {
+                "description": "Name of the subnet1 cidr"
+            }
+        },
+        "vnetSubnet2":{
+            "type": "string",
+            "metadata": {
+                "description": "Name of the subnet2"
+            }
+        },
+        "vnetSubnet2cidr":{
+            "type": "string",
+            "metadata": {
+                "description": "Name of the subnet1 cidr"
+            }
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('vnetName')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [],
+            "tags": {
+                "displayName": "[parameters('vnetName')]"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('iaac-demo-vnetPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('iaac-demo-vnetSubnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('iaac-demo-vnetSubnet1Prefix')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('iaac-demo-vnetSubnet2Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('iaac-demo-vnetSubnet2Prefix')]"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "variables": {
+        "iaac-demo-vnetPrefix": "[parameters('vnetcidrBlock')]",
+        "iaac-demo-vnetSubnet1Name": "[parameters('vnetSubnet1')]",
+        "iaac-demo-vnetSubnet1Prefix": "[parameters('vnetSubnet1cidr')]",
+        "iaac-demo-vnetSubnet2Name": "[parameters('vnetSubnet2')]",
+        "iaac-demo-vnetSubnet2Prefix": "[parameters('vnetSubnet2cidr')]"
+    }
+}

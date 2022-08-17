@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmSku": {
+            "value": "Standard_B1s"
+        },
+        "ubuntuOSVersion": {
+            "value": "16.04-LTS"
+        },
+        "vmssName": {
+            "value": "iaac-demo-ms2-vmss"
+        },
+        "vnetName":{
+            "value": "iaac-demo-vnet-prod"
+        },
+        "subnetName":{
+            "value": "subnet2-prod"
+        },
+        "instanceCount": {
+            "value": 2
+        },
+        "adminUsername": {
+            "value": "hbadmin"
+        },
+        "location": {
+            "value": "westus"
+        },
+        "authenticationType": {
+            "value": "password"
+        },
+        "adminPasswordOrKey": {
+            "reference":{
+                "keyVault": {
+                    "id": "/subscriptions/e82f8e60-963c-4ebf-880d-4a6f2647e05e/resourceGroups/iaac-demo-prod-rg/providers/Microsoft.KeyVault/vaults/iaac-demo-kv-prod"
+                },
+                "secretName": "password-vm"
+            }
+        },
+        "autoscaleName":{
+            "value": "autoscale-vmss-ms2-prod"
+        },
+        "autoscaleMin":{
+            "value": 2
+        },
+        "autoscaleMax":{
+            "value": 5
+        },
+        "autoscaleDefault":{
+            "value": 2
+        }
+    }
+}

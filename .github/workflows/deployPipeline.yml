@@ -1,0 +1,27 @@
+name: deployPipeline
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        description: 'Deploy environment'
+        required: true
+
+jobs:
+  deployVNet:
+    uses: cathybraun/iaac-demo-azure/.github/workflows/deployVNet.yml@main
+    with:
+      environment: ${{ github.event.inputs.environment }}
+    secrets: inherit
+  deployVMSS-MS1:
+    needs: deployVNet
+    uses: cathybraun/iaac-demo-azure/.github/workflows/deployVMSS-MS1.yml@main
+    with:
+      environment: ${{ github.event.inputs.environment }}
+    secrets: inherit
+  deployVMSS-MS2:
+    needs: deployVNet
+    uses: cathybraun/iaac-demo-azure/.github/workflows/deployVMSS-MS2.yml@main
+    with:
+      environment: ${{ github.event.inputs.environment }}
+    secrets: inherit
