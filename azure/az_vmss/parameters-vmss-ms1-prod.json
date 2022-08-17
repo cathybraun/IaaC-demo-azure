@@ -18,7 +18,7 @@
             "value": "subnet1-prod"
         },
         "instanceCount": {
-            "value": 3
+            "value": 1
         },
         "adminUsername": {
             "value": "hbadmin"
